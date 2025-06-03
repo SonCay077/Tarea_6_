@@ -1,0 +1,133 @@
+@startuml
+' Clase Abstracta Persona
+abstract class Persona {
+    # String nombre
+    # String cedula
+    # String direccion
+    # String telefono
+    + Persona(String nombre, String cedula, String direccion, String telefono)
+    + void actualizarDatos(String direccion, String telefono)
+    + abstract void mostrarRol()
+    + String getNombre()
+    + String getCedula()
+    + String getDireccion()
+    + String getTelefono()
+}
+
+' Clase Cliente
+class Cliente {
+    + Cliente(String nombre, String cedula, String direccion, String telefono)
+    + void mostrarRol()
+    + boolean ingresarAlSistema()
+    + void registrarCuenta(String tipo)
+    + void solicitarPrestamo(double monto)
+    + void agregarTarjetaCredito(TarjetaCredito tarjeta)
+    + void verResumenFinanciero()
+}
+
+' Clase Abstracta Empleado
+abstract class Empleado {
+    - String usuario
+    - String clave
+    + Empleado(String nombre, String cedula, String direccion, String telefono, String usuario, String clave)
+    + boolean autenticarEmpleado(String usuario, String clave)
+    + void crearCuentaParaCliente(Cliente cliente, String tipo)
+    + void modificarDatosCliente(Cliente cliente)
+    + void registrarPrestamo(Cliente cliente, double monto)
+    + void cerrarCuenta(Cliente cliente, Cuenta cuenta)
+    + String getUsuario()
+}
+
+' Subclase Cajero
+class Cajero {
+    + Cajero(String nombre, String cedula, String direccion, String telefono, String usuario, String clave)
+    + void mostrarRol()
+    + void procesarRetiro(Cliente cliente, double monto)
+    + void consultarSaldo(Cliente cliente)
+    + void procesarDeposito(Cliente cliente, double monto)
+}
+
+' Subclase BalconServicios
+class BalconServicios {
+    + BalconServicios(String nombre, String cedula, String direccion, String telefono, String usuario, String clave)
+    + void mostrarRol()
+    + Cliente registrarNuevoCliente(Scanner scanner)
+    + void actualizarDatosCliente(Cliente cliente, Scanner scanner)
+}
+
+' Subclase JefeAgencia
+class JefeAgencia {
+    + JefeAgencia(String nombre, String cedula, String direccion, String telefono, String usuario, String clave)
+    + void mostrarRol()
+    + boolean aprobarPrestamo(Cliente cliente, double monto)
+    + void generarReporteOperaciones()
+    + void evaluarEmpleado(Empleado empleado)
+}
+
+' Clase Cuenta
+class Cuenta {
+    - String numeroCuenta
+    - String tipoCuenta
+    - double saldo
+    + Cuenta(String numeroCuenta, String tipoCuenta, double saldo)
+    + String getNumeroCuenta()
+    + String getTipoCuenta()
+    + double getSaldo()
+    + void depositar(double monto)
+    + void retirar(double monto)
+}
+
+' Clase TarjetaCredito
+class TarjetaCredito {
+    - String numeroTarjeta
+    - String tipo
+    - double limiteCredito
+    + TarjetaCredito(String numeroTarjeta, String tipo, double limiteCredito)
+    + String getNumeroTarjeta()
+    + String getTipo()
+    + double getLimiteCredito()
+}
+
+' Clase Principal de la Aplicación
+class BancoApp {
+    - static List<Cliente> clientes
+    - static List<Empleado> empleados
+    - static Scanner scanner
+    + static void main(String[] args)
+    - static void registrarNuevoCliente()
+    - static void ingresarComoCliente()
+    - static void menuCliente(Cliente cliente)
+    - static void ingresarComoEmpleado()
+    - static void menuCajero(Cajero cajero)
+    - static void menuBalconServicios(BalconServicios balcon)
+    - static void menuJefeAgencia(JefeAgencia jefe)
+    - static Cliente buscarClientePorCedula(String cedula)
+    - static Empleado buscarEmpleadoPorCedula(String cedula)
+}
+
+' Relaciones de Herencia
+Persona <|-- Cliente
+Persona <|-- Empleado
+Empleado <|-- Cajero
+Empleado <|-- BalconServicios
+Empleado <|-- JefeAgencia
+
+' Relaciones
+BancoApp --> Cliente
+BancoApp --> Empleado
+BancoApp --> Cuenta
+BancoApp --> TarjetaCredito
+
+Cliente --> TarjetaCredito
+Cliente --> Cuenta
+
+Empleado --> Cliente
+Empleado --> Cuenta
+
+BalconServicios --> Cliente
+Cajero --> Cliente
+Cajero --> Cuenta
+JefeAgencia --> Cliente
+JefeAgencia --> Empleado
+
+@enduml
